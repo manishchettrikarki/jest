@@ -32,7 +32,7 @@ describe("POST /api/auth/register", () => {
     const newUser = {
       firstName: "Test",
       lastName: "User",
-      password: "securepassword123",
+      // password: "securepassword123",
     };
 
     const response = await request(app)
@@ -52,7 +52,7 @@ describe("POST /api/auth/register", () => {
     expect(data).not.toHaveProperty("password");
   });
 
-  it("should return 500 if required fields are missing", async () => {
+  it("should return 400 if required fields are missing", async () => {
     const response = await request(app)
       .post("/api/auth/register")
       .send({firstName: "OnlyFirstName"})
