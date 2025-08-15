@@ -1,8 +1,8 @@
 import request from "supertest";
 import express from "express";
-import { authRouter } from "../auth.router";
-import { Sequelize } from "sequelize-typescript";
-import { User } from "../model/auth.model";
+import {authRouter} from "../auth.router";
+import {Sequelize} from "sequelize-typescript";
+import {User} from "../model/auth.model";
 
 const sequelize = new Sequelize({
   dialect: "postgres",
@@ -20,7 +20,7 @@ app.use("/api/auth", authRouter);
 
 beforeAll(async () => {
   await sequelize.authenticate();
-  await sequelize.sync({ force: true });
+  await sequelize.sync({force: true});
 });
 
 afterAll(async () => {
@@ -42,23 +42,20 @@ describe("POST /api/auth/register", () => {
       .expect(201);
 
     expect(response.body).toHaveProperty("success", true);
-    expect(response.body).toHaveProperty(
-      "message",
-      "User registered successfully"
-    );
+    expect(response.body).toHaveProperty("message", "User registered successfully");
     expect(response.body).toHaveProperty("data");
 
-    const { data } = response.body;
+    const {data} = response.body;
     expect(data).toHaveProperty("id");
     expect(data.firstName).toBe(newUser.firstName);
     expect(data.lastName).toBe(newUser.lastName);
     expect(data).not.toHaveProperty("password");
   });
 
-  it("should return 400 if required fields are missing", async () => {
+  it("should return 500 if required fields are missing", async () => {
     const response = await request(app)
       .post("/api/auth/register")
-      .send({ firstName: "OnlyFirstName" })
+      .send({firstName: "OnlyFirstName"})
       .expect(400);
 
     expect(response.body).toHaveProperty("error", "Missing required fields");
