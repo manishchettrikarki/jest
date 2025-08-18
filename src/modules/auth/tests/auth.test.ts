@@ -32,7 +32,7 @@ describe("POST /api/auth/register", () => {
     const newUser = {
       firstName: "Test",
       lastName: "User",
-      // password: "securepassword123",
+      password: "securepassword123",
     };
 
     const response = await request(app)
